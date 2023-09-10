@@ -1,0 +1,51 @@
+replicaCount: 1
+
+image:
+  image: nginx
+  pullPolicy: Always
+  tag: "latest"
+
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations:
+  type: frontend
+
+securityContext:
+  capabilities:
+   drop:
+     - ALL
+
+containerPort: 80
+
+service:
+  type: NodePort
+  port: 80
+
+traefik:
+  enabled: false
+  path: '/'
+  app: 'assistant'
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 200Mi
+  requests:
+    cpu: 50m
+    memory: 50Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 85
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
